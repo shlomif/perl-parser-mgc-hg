@@ -421,8 +421,10 @@ sub maybe
    my $e = $@;
 
    pos($self->{str}) = $pos;
-
-   die $e if $committed or not eval { $e->isa( "Parser::MGC::Failure" ) };
+   if ($committed or
+       (! eval { $e->isa( "Parser::MGC::Failure" ) })) {
+       die $e;
+   }
    return undef;
 }
 
