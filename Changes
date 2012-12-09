@@ -1,0 +1,71 @@
+Revision history for Parser-MGC
+
+0.11    CHANGES:
+         * Allow different toplevel parse methods to the constructor
+         * Added another example showing parsing XML - only a minimal example;
+           do not use this as real code. :)
+
+0.10    CHANGES:
+         * Added ->maybe_expect, for higher performance parsers
+
+0.09    CHANGES:
+         * Added ->pos accessor and ->fail_from to throw failures from other
+           locations
+         * Added ->token_number as a convenience for int or float
+
+0.08    CHANGES:
+         * Give ->list_of and ->sequence_of proper failure-handling semantics
+         * Added ->generic_token
+         * Defer conversion of pos into line/col/text until string-formatting
+           a failure exception - improves performance of backtracking
+         * Make token_float tuneable
+
+0.07    CHANGES:
+         * Allow ->expect to return subgroup captures in list context
+         * Documentation improvements
+        
+        BUGFIXES:
+         * Use Data::Dumper rather than Data::Dump in examples, as the latter
+           is not core; no point pulling in non-core deps simply for examples
+
+0.06    CHANGES:
+         * Renamed ->one_of to ->any_of
+         * Added ->substring_before
+         * Allow ->scope_of to not take a start pattern
+         * Recognise the usual set of character escapes in ->token_string
+         * Added more example scripts to demonstrate:
+            + the use ->substring_before to parse POD-like notation
+            + accumulator variables instead of structural return
+         * Unit-test the example scripts
+
+0.05    CHANGES:
+         * Added ->scope_level
+         * Added ->from_reader as a new potential source of string input
+
+0.04    CHANGES:
+         * Added ->token_float
+         * Optionally parse 0o... ad octal integers
+
+        BUGFIXES:
+         * Match strings non-greedily
+         * Correct exception printing when line indent includes tabs (thanks
+           to Khisanth/#perl)
+
+0.03    CHANGES:
+         * Expanded documentation, more examples
+        
+        BUGFIXES:
+         * Regexp quoting fix for perl >= 5.13.6
+         * Declare dependency on File::Slurp
+
+0.02    CHANGES:
+         * ->expect now returns the consumed string
+         * ->token_int recognises negative integers
+         * ->token_* raises a failure at end-of-scope, rather than returning
+           undef
+
+        BUGFIXES:
+         * 'use overload fallback' to keep Test::More 0.96 happy
+
+0.01    First version, released on an unsuspecting world.
+
