@@ -503,7 +503,10 @@ sub list_of
    my $self = shift;
    my ( $sep, $code ) = @_;
 
-   ref $sep or $sep = qr/\Q$sep/ if defined $sep;
+   # Convert $sep into a regular expression in case it is a string.
+   if (defined $sep and !ref $sep) {
+       $sep = qr/\Q$sep/;
+   }
 
    my $committed;
    local $self->{committer} = sub { $committed++ };
@@ -518,7 +521,9 @@ sub list_of
       my $e = $@;
 
       pos($self->{str}) = $pos;
-      die $e if $committed or not eval { $e->isa( "Parser::MGC::Failure" ) };
+      if ($committed or not eval { $e->isa( "Parser::MGC::Failure" ) }) {
+          die $e;
+      }
       last;
    }
    continue {
@@ -594,12 +599,16 @@ sub any_of
       local $self->{committer} = sub { $committed++ };
 
       my $ret;
-      eval { $ret = shift->( $self ); 1 } and return $ret;
+      if (eval { $ret = shift->( $self ); 1 }) {
+          return $ret;
+      }
       my $e = $@;
 
       pos( $self->{str} ) = $pos;
 
-      die $e if $committed or not eval { $e->isa( "Parser::MGC::Failure" ) };
+      if ($committed or not eval { $e->isa( "Parser::MGC::Failure" ) }) {
+          die $e;
+      }
    }
 
    $self->fail( "Found nothing parseable" );
