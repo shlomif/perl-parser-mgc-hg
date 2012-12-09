@@ -288,8 +288,12 @@ sub where
    my $str = $self->{str};
 
    my $sol = $pos;
-   $sol-- if $sol > 0 and substr( $str, $sol, 1 ) =~ m/^[\r\n]$/;
-   $sol-- while $sol > 0 and substr( $str, $sol-1, 1 ) !~ m/^[\r\n]$/;
+   if ($sol > 0 and substr( $str, $sol, 1 ) =~ m/^[\r\n]$/) {
+      $sol--;
+   }
+   while ($sol > 0 and substr( $str, $sol-1, 1 ) !~ m/^[\r\n]$/) {
+      $sol--;
+   }
 
    my $eol = $pos;
    $eol++ while $eol < length($str) and substr( $str, $eol, 1 ) !~ m/^[\r\n]$/;
